@@ -1,13 +1,13 @@
 n,q = map(int, input().split())
 Tree = []
 noti = [[0]*22 for _ in range(n+1)]
+cnt = [0]*(n+1)
 
 class Node:
     def __init__(self, p, a):
         self.parent = p
         self.authority = a
         self.block = False
-        self.cnt = 0
 
 def push_info(data):
     global Tree
@@ -20,7 +20,7 @@ def push_info(data):
             a -= 1
             p = cur.parent
             cur = Tree[p]
-            cur.cnt += 1
+            cnt[p] += 1
             noti[p][a] += 1
 
 def change_alam(data):
@@ -42,7 +42,9 @@ def change_alam(data):
             p = cur.parent
             cur = Tree[p]
             noti[p][level] += m*k
-            cur.cnt += m*k
+            cnt[p] += m*k
+            if cur.block:
+                break
 
 
 
@@ -61,10 +63,10 @@ def change_power(data):
         cur = Tree[p]
         if a >= 0:
             noti[p][a] -= 1
-            cur.cnt -= 1
+            cnt[p] -= 1
         if new_a >= 0:
             noti[p][new_a] += 1
-            cur.cnt += 1
+            cnt[p] += 1
 
 
 
@@ -88,7 +90,7 @@ def change_parent(data):
 
 def get_alams(data):
     x = data[0]
-    return Tree[x].cnt
+    return cnt[x]
 
 
 for _ in range(q):
@@ -103,3 +105,7 @@ for _ in range(q):
         change_parent(data)
     else:
         print(get_alams(data))
+
+    # print(*noti,sep="\n")
+    # print(cnt)
+    # print()

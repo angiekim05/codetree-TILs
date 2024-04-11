@@ -16,7 +16,7 @@ def push_info(data):
         a = data[n+i]
         cur = Tree[i+1]
         noti[i+1][a] += 1
-        while a > 0:
+        while cur.parent is not None and a > 0:
             a -= 1
             p = cur.parent
             cur = Tree[p]

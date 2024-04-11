@@ -52,7 +52,7 @@ def change_power(data):
     a = cur.authority
     noti[x][a] -= 1
     noti[x][new_a] += 1
-    while max(new_a,a) > 0:
+    while cur.parent is not None and max(new_a,a) > 0:
         if cur.block:
             break
         a -= 1

@@ -50,7 +50,8 @@ def change_alam(data):
 
 def change_power(data):
     x, new_a = data
-    a = authority[x]
+    a = authority[x]    
+    new_a = min(20,new_a)
     authority[x] = new_a
     noti[x][a] -= 1
     noti[x][new_a] += 1

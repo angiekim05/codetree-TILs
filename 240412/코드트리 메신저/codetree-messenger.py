@@ -23,6 +23,7 @@ def push_info(data):
             cnt[cur] += 1
             noti[cur][l] += 1
 
+
 def change_alam(data):
     x = data[0]
     if block[x]:
@@ -47,26 +48,41 @@ def change_alam(data):
         depth += 1
 
 
-
 def change_power(data):
     x, new_a = data
-    cur = x
-    a = authority[cur]
+    a = authority[x]
     noti[x][a] -= 1
     noti[x][new_a] += 1
-    while parent[cur] != -1 and max(new_a,a) > 0:
-        if block[cur]:
-            break
-        a -= 1
-        new_a -= 1
-        cur = parent[cur]
-        if a >= 0:
-            noti[cur][a] -= 1
+    if not block[x]:
+        cur = x
+        for i in range(a-1,-1,-1):
+            cur = parent[cur]
+            noti[cur][i] -= 1
             cnt[cur] -= 1
-        if new_a >= 0:
-            noti[cur][new_a] += 1
-            cnt[cur] += 1
+            if block[cur] or parent[cur] == -1:
+                break
 
+    if not block[x]:
+        cur = x
+        for i in range(new_a-1,-1,-1):
+            cur = parent[cur]
+            noti[cur][i] += 1
+            cnt[cur] += 1
+            if block[cur] or parent[cur] == -1:
+                break
+
+    # while parent[cur] != -1 and max(new_a,a) > 0:
+    #     if block[cur]:
+    #         break
+    #     a -= 1
+    #     new_a -= 1
+    #     cur = parent[cur]
+    #     if a >= 0:
+    #         noti[cur][a] -= 1
+    #         cnt[cur] -= 1
+    #     if new_a >= 0:
+    #         noti[cur][new_a] += 1
+    #         cnt[cur] += 1
 
 
 def change_parent(data):
@@ -106,6 +122,7 @@ for _ in range(q):
     else:
         get_alams(data)
 
+    #
     # print(qn,data)
     # print(*noti,sep="\n")
     # print(cnt)

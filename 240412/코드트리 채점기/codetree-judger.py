@@ -6,11 +6,12 @@ waiting_queue = []
 judging_machine = dict()
 finished = dict()
 resting = []
+cnt = 0
 
 q = int(input())
 
 def ready(n, u):
-    global resting
+    global resting, cnt
     resting = list(range(1, n + 1))
     heapify(resting)
     push_data(0,1,u)
@@ -18,14 +19,16 @@ def ready(n, u):
 
 
 def push_data(t, p, u):
+    global cnt
     if u in waiting_url:
         return
     heappush(waiting_queue, (p, t, u))
     waiting_url.add(u)
-
+    cnt += 1
 
 
 def grading(start):
+    global cnt
     temp = []
     while resting and waiting_queue:
         p, t, u= heappop(waiting_queue)
@@ -42,6 +45,7 @@ def grading(start):
                 continue
 
         waiting_url.remove(u)
+        cnt -= 1
         jid = heappop(resting)
         judging_machine[jid] = (start,domain)
         judging_domain.add(domain)
@@ -62,7 +66,7 @@ def finish(t, jid):
 
 
 def search(t):
-    print(len(waiting_queue))
+    print(cnt)
 
 
 for _ in range(q):

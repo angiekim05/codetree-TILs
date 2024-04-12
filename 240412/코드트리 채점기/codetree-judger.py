@@ -21,9 +21,9 @@ def ready(n, u):
 
 def push_data(t, p, u):
     global cnt
-    if u in waiting_url:
-        return
     domain, id = u.split("/")
+    if id in waiting_url[domain]:
+        return
     if domain in waiting_queue:
         heappush(waiting_queue[domain], (p, t, id))
     else:
@@ -85,6 +85,7 @@ for _ in range(q):
     elif task == "500":
         search(int(data[0]))
 
+    # print(task,data)
     # print(resting)
     # print(waiting_queue)
     # print(judging_machine)

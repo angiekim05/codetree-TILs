@@ -1,8 +1,9 @@
 from heapq import heappop,heappush,heapify
+from collections import defaultdict
 
-waiting_url = set()
+waiting_url = defaultdict(set)
 judging_domain = set()
-waiting_queue = []
+waiting_queue = dict()
 judging_machine = dict()
 finished = dict()
 resting = []
@@ -22,39 +23,41 @@ def push_data(t, p, u):
     global cnt
     if u in waiting_url:
         return
-    heappush(waiting_queue, (p, t, u))
-    waiting_url.add(u)
+    domain, id = u.split("/")
+    if domain in waiting_queue:
+        heappush(waiting_queue[domain], (p, t, id))
+    else:
+        waiting_queue[domain] = [(p, t, id)]
+    waiting_url[domain].add(id)
     cnt += 1
 
 
 def grading(start):
     global cnt
-    temp = []
-    while resting and waiting_queue:
-        p, t, u= heappop(waiting_queue)
-        domain, id = u.split("/")
-
-        # 채점 될 수 없는 조건
-        if domain in judging_domain:
-            heappush(temp,(p,t,u))
+    if not resting:
+        return
+    min_domain = 0
+    min_data = (50001,0,0)
+    for d in waiting_queue.keys():
+        if d in judging_domain:
             continue
-        if domain in finished:
-            s, gap = finished[domain]
-            if s + 3*gap > start:
-                heappush(temp, (p, t, u))
+        if d in finished:
+            s,gap = finished[d]
+            if s+3*gap > start:
                 continue
+        if waiting_queue[d]:
+            temp = waiting_queue[d][0]
+            if temp < min_data:
+                min_data = temp
+                min_domain = d
 
-        waiting_url.remove(u)
-        cnt -= 1
+    if min_domain:
+        p,t,id = heappop(waiting_queue[min_domain])
+        waiting_url[min_domain].remove(id)
         jid = heappop(resting)
-        judging_machine[jid] = (start,domain)
-        judging_domain.add(domain)
-        break
-
-    # 못한 task는 다시 담기
-    for x in temp:
-        heappush(waiting_queue,x)
-
+        judging_machine[jid] = (start,min_domain)
+        judging_domain.add(min_domain)
+        cnt -= 1
 
 def finish(t, jid):
     if jid not in judging_machine:
@@ -81,9 +84,10 @@ for _ in range(q):
         finish(int(data[0]),int(data[1]))
     elif task == "500":
         search(int(data[0]))
-    # 
+
     # print(resting)
     # print(waiting_queue)
     # print(judging_machine)
     # print(finished)
+    # print(waiting_url)
     # print()

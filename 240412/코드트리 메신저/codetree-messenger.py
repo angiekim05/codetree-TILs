@@ -51,6 +51,7 @@ def change_alam(data):
 def change_power(data):
     x, new_a = data
     a = authority[x]
+    authority[x] = new_a
     noti[x][a] -= 1
     noti[x][new_a] += 1
     if not block[x]:
@@ -71,18 +72,7 @@ def change_power(data):
             if block[cur] or parent[cur] == -1:
                 break
 
-    # while parent[cur] != -1 and max(new_a,a) > 0:
-    #     if block[cur]:
-    #         break
-    #     a -= 1
-    #     new_a -= 1
-    #     cur = parent[cur]
-    #     if a >= 0:
-    #         noti[cur][a] -= 1
-    #         cnt[cur] -= 1
-    #     if new_a >= 0:
-    #         noti[cur][new_a] += 1
-    #         cnt[cur] += 1
+
 
 
 def change_parent(data):

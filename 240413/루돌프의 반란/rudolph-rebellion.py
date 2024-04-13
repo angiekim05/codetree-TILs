@@ -120,7 +120,6 @@ def move_santa():
                 land[nsx][nsy] = i
                 santa[i] = (nsx,nsy)
                 if (nsx,nsy) == (rr,rc):
-                    print(nsx,nsy,i)
                     attack_rodolph(rr,rc,-dr,-dc,i)
 
     return

@@ -30,24 +30,24 @@ def push_santa(sn, x, y, dr, dc):
     return
 
 
-def attack_santa(rr, rc, dr, dc, sn):
+def attack_santa(rr, rc, dr, dc, sn, turn):
     santa_score[sn] += c
-    can_not_move[sn] += 2
+    can_not_move[sn] = turn + 2
     land[rr][rc] = 0
     nx,ny = rr+c*dr, rc+c*dc
     push_santa(sn,nx,ny,dr,dc)
     return
 
-def attack_rodolph(rr,rc,dr,dc,sn):
+def attack_rodolph(rr,rc,dr,dc,sn,turn):
     santa_score[sn] += d
-    can_not_move[sn] += 1
+    can_not_move[sn] = turn + 2
     land[rr][rc] = 0
     nx,ny = rr+d*dr, rc+d*dc
     push_santa(sn,nx,ny,dr,dc)
     return
 
 
-def move_rudolph():
+def move_rudolph(turn):
     global rr, rc
     q = deque()
     q.append((rr,rc))
@@ -90,14 +90,13 @@ def move_rudolph():
             min_dist = nd
     rr,rc = nrr,nrc
     if land[rr][rc]:
-        attack_santa(rr,rc,dr,dc,land[rr][rc])
+        attack_santa(rr,rc,dr,dc,land[rr][rc],turn)
     return
 
 
-def move_santa():
+def move_santa(turn):
     for i in range(1,p+1):
-        if can_not_move[i]:
-            can_not_move[i] -= 1
+        if can_not_move[i] > turn:
             continue
         if i in santa:
             sx,sy = santa[i]
@@ -120,15 +119,21 @@ def move_santa():
                 land[nsx][nsy] = i
                 santa[i] = (nsx,nsy)
                 if (nsx,nsy) == (rr,rc):
-                    attack_rodolph(rr,rc,-dr,-dc,i)
+                    attack_rodolph(rr,rc,-dr,-dc,i,turn)
 
     return
 
 
 for turn in range(m):
-    move_rudolph()
-    move_santa()
+    move_rudolph(turn)
     # print(*land, sep="\n")
+    # print()
+    # print(can_not_move)
+    # print(rr,rc)
+    # print()
+    move_santa(turn)
+    # print(*land, sep="\n")
+    # print(turn)
     # print(can_not_move)
     # print()
 

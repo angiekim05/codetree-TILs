@@ -7,8 +7,8 @@ total = sum(sum(row) for row in arr)  # 전체 빙하의 개수 카운트
 dx = [0, 0, -1, 1]
 dy = [-1, 1, 0, 0]
 
-def can_go(x, y):
-    return 0 <= x < n and 0 <= y < m and not visited[nx][ny]
+def in_range(x, y):
+    return 0 <= x < n and 0 <= y < m
 
 def melt():
     can_be_melt = []
@@ -22,7 +22,9 @@ def melt():
         for i in range(4):
             nx, ny = x + dx[i], y + dy[i]
 
-            if not can_go(nx, ny):
+            if not in_range(nx, ny):
+                continue
+            if visited[nx][ny]:
                 continue
             visited[nx][ny] = 1
             

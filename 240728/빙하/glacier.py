@@ -15,14 +15,13 @@ dy = [-1,1,0,0]
 def can_go(x,y):
     return 0<=x<n and 0<=y<m
 
-def melted(x_,y_):
+def melted():
     new = [[arr[i][j] for j in range(m)] for i in range(n)]
     visited = [[0]*m for _ in range(n)]
 
     q = deque()
-    q.append((x_,y_))
+    q.append((0,0))
     cnt = 0
-    newx,newy = 0,0
     while q:
         x,y = q.popleft()
 
@@ -37,16 +36,14 @@ def melted(x_,y_):
             
             if arr[nx][ny] == 1:
                 new[nx][ny] = 0
-                newx,newy = nx,ny
                 cnt += 1
             else:
                 q.append((nx,ny))
-    return newx,newy,cnt,new
+    return cnt,new
+    
 t = 0
-x,y = 0,0
 while total:
-    x,y,cnt,arr = melted(x,y)
-    # print(x,y,cnt,arr,total)
+    cnt,arr = melted()
     t += 1
     total -= cnt
     if total == 0:

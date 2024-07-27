@@ -36,11 +36,11 @@ def melt():
     for x,y in can_be_melt: # 동시에 빙하 녹이기
         arr[x][y] = 0
 
-    return len(can_be_melt), new
+    return len(can_be_melt)
 
 t = 0
 while total:
-    cnt, arr = melt()
+    cnt = melt()
     t += 1
     total -= cnt 
     if total == 0: # 녹일 빙하가 남아있지 않으면 종료

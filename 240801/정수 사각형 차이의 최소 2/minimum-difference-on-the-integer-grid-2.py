@@ -15,8 +15,10 @@ for i in range(1,n):
         temp1 = [max(arr[i][j], dp[i-1][j][0]),min(arr[i][j], dp[i-1][j][1])]
         temp2 = [max(arr[i][j], dp[i][j-1][0]),min(arr[i][j], dp[i][j-1][1])]
         # print(i,j,temp1,temp2)
-        if minus(*temp1) >= minus(*temp2):
+        if minus(*temp1) > minus(*temp2):
             dp[i][j] = temp2
+        elif minus(*temp1) == minus(*temp2):
+            dp[i][j] = min(temp1,temp2)
         else:
             dp[i][j] = temp1
         

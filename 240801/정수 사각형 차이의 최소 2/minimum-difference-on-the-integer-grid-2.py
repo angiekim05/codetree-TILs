@@ -1,28 +1,22 @@
 n = int(input())
-arr = [list(map(int,input().split())) for i in range(n)]
-dp = [[[0,10000] for _ in range(n)] for _ in range(n)]
+arr = []
+MAX = 0
+for i in range(n):
+    arr.append(list(map(int,input().split())))
+    MAX = max(MAX, *arr[i])
+dp = [[MAX+1] * n for _ in range(n)]
 
-def minus(x,y):
-    return abs(x-y)
+ans = 1000
+for lower_bound in range(1,MAX+1):
+    dp[0][0] = arr[0][0] if arr[0][0] >= lower_bound else 101
 
-dp[0][0] = [arr[0][0],arr[0][0]]
-for i in range(1,n):
-    dp[i][0] = [max(arr[i][0], dp[i-1][0][0]),min(arr[i][0], dp[i-1][0][1])]
-    dp[0][i] = [max(arr[0][i], dp[0][i-1][0]),min(arr[0][i], dp[0][i-1][1])]
-
-for i in range(1,n):
-    for j in range(1,n):
-        temp1 = [max(arr[i][j], dp[i-1][j][0]),min(arr[i][j], dp[i-1][j][1])]
-        temp2 = [max(arr[i][j], dp[i][j-1][0]),min(arr[i][j], dp[i][j-1][1])]
-        # print(i,j,temp1,temp2)
-        if minus(*temp1) > minus(*temp2):
-            dp[i][j] = temp2
-        elif minus(*temp1) == minus(*temp2):
-            dp[i][j] = min(temp1,temp2)
-        else:
-            dp[i][j] = temp1
+    for i in range(1,n):
+        dp[i][0] = max(arr[i][0] if arr[i][0] >= lower_bound else 101, dp[i-1][0])
+        dp[0][i] = max(arr[0][i] if arr[0][i] >= lower_bound else 101, dp[0][i-1])
         
+    for i in range(1,n):
+        for j in range(1,n):
+            dp[i][j] = max(min(dp[i-1][j],dp[i][j-1]), arr[i][j] if arr[i][j] >= lower_bound else 101)
 
-
-print(dp[-1][-1][0] - dp[-1][-1][1])
-# print(*dp,sep="\n")
+    ans = min(ans, dp[-1][-1]-lower_bound)
+print(ans)

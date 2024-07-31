@@ -7,7 +7,8 @@ for i in range(n):
 dp = [[MAX+1] * n for _ in range(n)]
 
 ans = 1000
-for lower_bound in range(1,MAX+1):
+
+def sol(lower_bound):
     dp[0][0] = arr[0][0] if arr[0][0] >= lower_bound else 101
 
     for i in range(1,n):
@@ -18,8 +19,13 @@ for lower_bound in range(1,MAX+1):
         for j in range(1,n):
             dp[i][j] = max(min(dp[i-1][j],dp[i][j-1]), arr[i][j] if arr[i][j] >= lower_bound else 101)
     
-    if dp[-1][-1] == 101:
+    return dp[-1][-1]
+
+for lower_bound in range(1,MAX+1):
+    upper_bound = sol(lower_bound)
+    
+    if upper_bound == 101:
         break
 
-    ans = min(ans, dp[-1][-1]-lower_bound)
+    ans = min(ans, upper_bound-lower_bound)
 print(ans)

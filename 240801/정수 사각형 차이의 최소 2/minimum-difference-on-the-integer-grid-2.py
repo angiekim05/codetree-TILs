@@ -17,7 +17,9 @@ for lower_bound in range(1,MAX+1):
     for i in range(1,n):
         for j in range(1,n):
             dp[i][j] = max(min(dp[i-1][j],dp[i][j-1]), arr[i][j] if arr[i][j] >= lower_bound else 101)
+    
     if dp[-1][-1] == 101:
-        continue
+        break
+
     ans = min(ans, dp[-1][-1]-lower_bound)
 print(ans)

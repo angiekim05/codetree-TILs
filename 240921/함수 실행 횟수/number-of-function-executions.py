@@ -1,12 +1,12 @@
 n = int(input())
-ans = 0
-def codetree(n):
-    global ans
-    ans += 1
-    if n<2:
-        return n 
-    else:
-        return codetree(n-1) + codetree(n-2)
+tgt = [0]*51
+tgt[0] = 1
+tgt[1] = 1
 
-codetree(n)
-print(ans%1000000007)
+def codetree(n):
+    if tgt[n]:
+        return tgt[n]
+    tgt[n] = codetree(n-1)+codetree(n-2) +1
+    return tgt[n]
+
+print(codetree(n)%1000000007)

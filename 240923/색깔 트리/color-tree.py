@@ -23,6 +23,7 @@ def add_node(mid,p,c,m,idx):
 def change_color(mid, c, idx):
     color_changed[mid] = idx
     color[mid] = c
+    node[mid] = idx
     return
 
 # 색조회

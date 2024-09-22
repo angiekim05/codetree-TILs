@@ -30,9 +30,11 @@ def change_color(mid, c, idx):
 def print_color(mid):
     x = mid
     c = color[mid]
+    idx = node[mid]
     while True:
-        if pid[x] in color_changed and node[mid] < color_changed[pid[x]] :
+        if pid[x] in color_changed and idx < color_changed[pid[x]] :
             c = color[pid[x]]
+            idx = color_changed[pid[x]]
         x = pid[x]
         if x == -1:
             break

@@ -70,7 +70,7 @@ def go_down(idx,y,d):
         else:
             break
     
-    if x == 0:
+    if x <= 1:
         # 골렘 정리
         init_forest()
         return 0

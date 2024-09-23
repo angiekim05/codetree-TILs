@@ -1,5 +1,5 @@
 r,c,k = map(int,input().split())
-forest = [[1]+[0]*c for _ in range(r+1)]
+forest = [[1]+[0]*c for _ in range(r+2)]
 exits = set()
 dx = [-1,0,1,0]
 dy = [0,1,0,-1]
@@ -7,7 +7,7 @@ dy = [0,1,0,-1]
 def init_forest():
     global exits
     exits = set()
-    for i in range(1,r+1):
+    for i in range(r+1):
         for j in range(1,c+1):
             forest[i][j] = 0
     return
@@ -53,6 +53,10 @@ def get_row(fx,fy):
 
                 if res == r:
                     return res
+    # print(exits)
+    # print(fx,fy)
+    # print(*visited[1:], sep="\n")
+    # print()
     return res
 
 def go_down(idx,y,d):
